@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 public class Logic : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         Debug.unityLogger.logHandler = new MyLogger();
-        //Logger.logHandler = new MyLogger();
     }
 
-    // Update is called once per frame
     void Update()
     {
         logStrings.Clear();
         
-        c.MyThing();
+        c.CrashFuntion();
     }
 
     private MyClass c = new MyClass();
@@ -34,21 +30,15 @@ public class Logic : MonoBehaviour
 
             y++;
         }
-        
-        //esses.Clear();
     }
 }
 
 public class MyClass
 {
-    public void MyThing()
+    public void CrashFuntion()
     {
-        nuuuull.MyThing();
-        
-        Debug.unityLogger.Log("Update");
+        throw new Exception("ThownException");
     }
-
-    private MyClass nuuuull;
 }
 
 public class MyLogger : ILogger
@@ -63,10 +53,10 @@ public class MyLogger : ILogger
         Logic.logStrings.Add(string.Format(format, args));
     }
 
-    public void LogException(Exception exception, Object context)
-    {
-        LogException(exception);
-    }
+public void LogException(Exception exception, Object context)
+{
+    Logic.logStrings.Add($"MyLoggerException: {exception.Message} --- {exception.StackTrace}");
+}
 
     public bool IsLogTypeAllowed(LogType logType)
     {
